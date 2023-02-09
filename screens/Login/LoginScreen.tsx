@@ -1,5 +1,7 @@
 import {
   Image,
+  KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -25,7 +27,10 @@ export const LoginScreen = () => {
         isValid,
         values,
       }) => (
-        <View style={styles.container}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.container}
+        >
           <Image
             source={require('../../assets/images/eduapps-logo.png')}
             style={styles.logo}
@@ -83,7 +88,7 @@ export const LoginScreen = () => {
           >
             <Text style={styles.loginButtonText}>Ingresar</Text>
           </TouchableOpacity>
-        </View>
+        </KeyboardAvoidingView>
       )}
     </Formik>
   )
