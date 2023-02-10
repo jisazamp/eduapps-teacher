@@ -63,12 +63,7 @@ export const RegisterScreen = () => {
                   }}
                 >
                   <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>
-                      Nombres{' '}
-                      <Text style={{ color: '#ff0033', fontWeight: '600' }}>
-                        *
-                      </Text>
-                    </Text>
+                    <Text style={styles.inputLabel}>Nombres </Text>
                     <TextInput
                       onBlur={handleBlur('firstName')}
                       onChangeText={handleChange('firstName')}
@@ -96,12 +91,7 @@ export const RegisterScreen = () => {
                   </View>
 
                   <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>
-                      Apellidos{' '}
-                      <Text style={{ color: '#ff0033', fontWeight: '600' }}>
-                        *
-                      </Text>
-                    </Text>
+                    <Text style={styles.inputLabel}>Apellidos </Text>
                     <TextInput
                       onBlur={handleBlur('lastName')}
                       onChangeText={handleChange('lastName')}
@@ -127,12 +117,7 @@ export const RegisterScreen = () => {
                   </View>
 
                   <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>
-                      Correo electrónico{' '}
-                      <Text style={{ color: '#ff0033', fontWeight: '600' }}>
-                        *
-                      </Text>
-                    </Text>
+                    <Text style={styles.inputLabel}>Correo electrónico </Text>
                     <TextInput
                       onBlur={handleBlur('email')}
                       onChangeText={handleChange('email')}
@@ -161,9 +146,6 @@ export const RegisterScreen = () => {
                   <View style={styles.inputGroup}>
                     <Text style={styles.inputLabel}>
                       Confirmar correo electrónico
-                      <Text style={{ color: '#ff0033', fontWeight: '600' }}>
-                        *
-                      </Text>
                     </Text>
                     <TextInput
                       onBlur={handleBlur('confirmEmail')}
@@ -193,12 +175,7 @@ export const RegisterScreen = () => {
                   </View>
 
                   <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>
-                      Contraseña
-                      <Text style={{ color: '#ff0033', fontWeight: '600' }}>
-                        *
-                      </Text>
-                    </Text>
+                    <Text style={styles.inputLabel}>Contraseña</Text>
                     <TextInput
                       onBlur={handleBlur('password')}
                       onChangeText={handleChange('password')}
@@ -225,12 +202,7 @@ export const RegisterScreen = () => {
                   </View>
 
                   <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>
-                      Confirmar contraseña
-                      <Text style={{ color: '#ff0033', fontWeight: '600' }}>
-                        *
-                      </Text>
-                    </Text>
+                    <Text style={styles.inputLabel}>Confirmar contraseña</Text>
                     <TextInput
                       onBlur={handleBlur('confirmPassword')}
                       onChangeText={handleChange('confirmPassword')}
