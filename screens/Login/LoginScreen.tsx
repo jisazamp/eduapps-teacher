@@ -1,5 +1,7 @@
+import { useNavigation } from '@react-navigation/native'
+import { Formik } from 'formik'
+import React from 'react'
 import {
-  Image,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -8,11 +10,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { Formik } from 'formik'
+import { LogoHeader } from '../../components'
+import { HeaderText } from '../../components/HeaderText/HeaderText'
 import { loginValidationSchema } from './schema/loginValidationSchema'
-import React from 'react'
 
 export const LoginScreen = () => {
+  const navigation = useNavigation()
+
   return (
     <Formik
       initialValues={{ email: '', password: '' }}
@@ -24,88 +28,115 @@ export const LoginScreen = () => {
         handleBlur,
         handleChange,
         handleSubmit,
-        isValid,
+        submitCount,
         values,
-      }) => (
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.container}
-        >
-          <Image
-            source={require('../../assets/images/eduapps-logo.png')}
-            style={styles.logo}
-            testID='logo'
-          />
-
-          <View style={styles.inputsContainer}>
-            <TextInput
-              onBlur={handleBlur('email')}
-              onChangeText={handleChange('email')}
-              placeholder='Correo electrónico'
-              placeholderTextColor={errors.email ? '#ff0033' : '#c5c3c5'}
-              style={{
-                ...styles.input,
-                borderColor: errors.email ? '#ff0033' : '#c5c3c5',
-              }}
-              testID='email-input'
-              value={values.email}
-              keyboardType='email-address'
-            />
-            {errors.email && (
-              <Text style={styles.errorMessage}>{errors.email}</Text>
-            )}
-
-            <TextInput
-              onBlur={handleBlur('password')}
-              onChangeText={handleChange('password')}
-              placeholder='Contraseña'
-              placeholderTextColor={errors.password ? 'red' : '#c5c3c5'}
-              secureTextEntry
-              style={{
-                ...styles.input,
-                borderColor: errors.password ? '#ff0033' : '#c5c3c5',
-              }}
-              testID='password-input'
-              value={values.password}
-            />
-            {errors.password && (
-              <Text style={styles.errorMessage}>{errors.password}</Text>
-            )}
-
-            <TouchableOpacity activeOpacity={0.8}>
-              <Text style={styles.registerText}>
-                ¿No tienes cuenta aún? Crea una
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity
-            activeOpacity={0.8}
-            disabled={!isValid}
-            style={{ ...styles.loginButton, opacity: isValid ? 1 : 0.5 }}
-            testID='login-button'
-            onPress={() => handleSubmit()}
+      }) => {
+        return (
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.container}
           >
-            <Text style={styles.loginButtonText}>Ingresar</Text>
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
-      )}
+            <LogoHeader />
+
+            <HeaderText message={'Inicio de sesión'} />
+
+            <View style={styles.inputsContainer}>
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Correo electrónico</Text>
+                <TextInput
+                  onBlur={handleBlur('email')}
+                  onChangeText={handleChange('email')}
+                  placeholder='yefferson@gmail.com'
+                  placeholderTextColor={
+                    errors.email && submitCount > 0 ? '#ff003340' : '#c5c3c5'
+                  }
+                  style={{
+                    ...styles.input,
+                    borderColor:
+                      errors.email && submitCount > 0 ? '#ff0033' : '#c5c3c5',
+                  }}
+                  testID='email-input'
+                  value={values.email}
+                  keyboardType='email-address'
+                />
+                {errors.email && submitCount > 0 && (
+                  <Text style={styles.errorMessage}>{errors.email}</Text>
+                )}
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Contraseña</Text>
+                <TextInput
+                  onBlur={handleBlur('password')}
+                  onChangeText={handleChange('password')}
+                  placeholder='*******'
+                  placeholderTextColor={
+                    errors.password && submitCount > 0 ? '#ff003340' : '#c5c3c5'
+                  }
+                  secureTextEntry
+                  style={{
+                    ...styles.input,
+                    borderColor:
+                      errors.password && submitCount > 0
+                        ? '#ff0033'
+                        : '#c5c3c5',
+                  }}
+                  testID='password-input'
+                  value={values.password}
+                />
+                {errors.password && submitCount > 0 && (
+                  <Text style={styles.errorMessage}>{errors.password}</Text>
+                )}
+              </View>
+
+              <TouchableOpacity style={{ marginTop: 16 }} activeOpacity={0.8}>
+                <Text style={styles.registerText}>
+                  ¿Olvidaste tu contraseña?
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={{
+                ...styles.loginButton,
+                backgroundColor: '#2a53a4',
+              }}
+              testID='login-button'
+              onPress={() => handleSubmit()}
+            >
+              <Text style={styles.loginButtonText}>Ingresar</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={{ ...styles.loginButton, backgroundColor: '#a6d96a' }}
+              onPress={() => navigation.navigate('Register')}
+            >
+              <Text style={styles.loginButtonText}>Registrarse</Text>
+            </TouchableOpacity>
+          </KeyboardAvoidingView>
+        )
+      }}
     </Formik>
   )
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     flex: 1,
     justifyContent: 'center',
   },
-  logo: {
-    height: 180,
-    width: 'auto',
+  headerText: {
+    alignSelf: 'center',
+    color: '#2a53a4',
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 16,
   },
   inputsContainer: {
-    marginTop: 20,
+    marginTop: 10,
     paddingVertical: 20,
   },
   input: {
@@ -116,7 +147,14 @@ const styles = StyleSheet.create({
     margin: 8,
     padding: 12,
     paddingLeft: 20,
+    width: '100%',
+  },
+  inputGroup: {
+    alignItems: 'baseline',
+    alignSelf: 'center',
+    justifyContent: 'center',
     width: '80%',
+    marginTop: 8,
   },
   loginButton: {
     alignSelf: 'center',
@@ -124,9 +162,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     height: 50,
     justifyContent: 'center',
-    margin: 8,
-    marginTop: 12,
+    margin: 4,
     width: '80%',
+  },
+  inputLabel: {
+    color: '#2c2c2c',
+    fontSize: 16,
+    fontWeight: '600',
   },
   loginButtonText: {
     color: 'white',
@@ -135,10 +177,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   errorMessage: {
-    alignSelf: 'center',
     color: '#ff0033',
     fontSize: 12,
-    width: '78%',
   },
   registerText: {
     alignSelf: 'center',
