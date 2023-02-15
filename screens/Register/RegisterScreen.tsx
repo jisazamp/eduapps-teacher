@@ -1,14 +1,15 @@
 import { Formik } from 'formik'
 import React from 'react'
 import {
+  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
-  Text,
-  TextInput,
-  TouchableOpacity,
   SafeAreaView,
   ScrollView,
   StatusBar,
+  Text,
+  TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native'
 import { LogoHeader } from '../../components'
@@ -16,8 +17,27 @@ import { HeaderText } from '../../components/HeaderText/HeaderText'
 import { styles } from '../Login/LoginScreen'
 import { useNavigation } from '@react-navigation/native'
 import { registerValidationSchema } from './schema/registerValidationSchema'
+import axios from 'axios'
+import { useMutation } from 'react-query'
 
 export const RegisterScreen = () => {
+  const register = async (values: {
+    email: string
+    firstName: string
+    lastName: string
+    password: string
+  }) => {
+    try {
+      await axios.post('http://localhost:3000/register', values).then((res) => {
+        console.log('Response', res.data)
+      })
+    } catch (error: any) {
+      console.log('Error', error.response.data)
+    }
+  }
+
+  const { mutate, isLoading } = useMutation(register)
+
   return (
     <Formik
       initialValues={{
@@ -29,7 +49,7 @@ export const RegisterScreen = () => {
         password: '',
       }}
       validationSchema={registerValidationSchema}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={(values) => mutate(values)}
     >
       {({
         errors,
@@ -239,7 +259,11 @@ export const RegisterScreen = () => {
                     }}
                     onPress={() => handleSubmit()}
                   >
-                    <Text style={styles.loginButtonText}>Registrarse</Text>
+                    {isLoading ? (
+                      <ActivityIndicator size='small' color='#fff' />
+                    ) : (
+                      <Text style={styles.loginButtonText}>Registrarse</Text>
+                    )}
                   </TouchableOpacity>
 
                   <TouchableOpacity

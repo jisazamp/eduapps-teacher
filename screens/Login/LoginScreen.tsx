@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import { Formik } from 'formik'
 import React from 'react'
 import {
+  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -13,14 +14,32 @@ import {
 import { LogoHeader } from '../../components'
 import { HeaderText } from '../../components/HeaderText/HeaderText'
 import { loginValidationSchema } from './schema/loginValidationSchema'
+import { useMutation } from 'react-query'
+import axios from 'axios'
 
 export const LoginScreen = () => {
   const navigation = useNavigation()
 
+  const login = async (values: { email: string; password: string }) => {
+    try {
+      await axios.post('http://localhost:3000/login', values).then((res) => {
+        console.log('Response', res.data)
+      })
+    } catch (error: any) {
+      console.log('Error', error.response.data)
+    }
+  }
+
+  const { mutate, isLoading } = useMutation(login, {
+    onSuccess: () => {
+      console.log('Success')
+    },
+  })
+
   return (
     <Formik
       initialValues={{ email: '', password: '' }}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={(values) => mutate(values)}
       validationSchema={loginValidationSchema}
     >
       {({
@@ -105,7 +124,11 @@ export const LoginScreen = () => {
               testID='login-button'
               onPress={() => handleSubmit()}
             >
-              <Text style={styles.loginButtonText}>Ingresar</Text>
+              {isLoading ? (
+                <ActivityIndicator color='white' />
+              ) : (
+                <Text style={styles.loginButtonText}>Iniciar sesión</Text>
+              )}
             </TouchableOpacity>
 
             <TouchableOpacity
